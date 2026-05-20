@@ -1,73 +1,54 @@
-import { useEvent } from 'expo';
-import HelloStorage, { HelloStorageView } from 'hello-storage';
-import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import * as HelloStorage from 'hello-storage';
 
 export default function App() {
-  const onChangePayload = useEvent(HelloStorage, 'onChange');
+  const [key, setKey] = useState('foo');
+  const [value, setValue] = useState('bar');
+  const [stored, setStored] = useState<string | null>(null);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.container}>
-        <Text style={styles.header}>Module API Example</Text>
-        <Group name="Constants">
-          <Text>{HelloStorage.PI}</Text>
-        </Group>
-        <Group name="Functions">
-          <Text>{HelloStorage.hello()}</Text>
-        </Group>
-        <Group name="Async functions">
-          <Button
-            title="Set value"
-            onPress={async () => {
-              await HelloStorage.setValueAsync('Hello from JS!');
-            }}
-          />
-        </Group>
-        <Group name="Events">
-          <Text>{onChangePayload?.value}</Text>
-        </Group>
-        <Group name="Views">
-          <HelloStorageView
-            url="https://www.example.com"
-            onLoad={({ nativeEvent: { url } }) => console.log(`Loaded: ${url}`)}
-            style={styles.view}
-          />
-        </Group>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+    <View style={styles.container}>
+      <Text style={styles.label}>Key</Text>
+      <TextInput style={styles.input} value={key} onChangeText={setKey} />
 
-function Group(props: { name: string; children: React.ReactNode }) {
-  return (
-    <View style={styles.group}>
-      <Text style={styles.groupHeader}>{props.name}</Text>
-      {props.children}
+      <Text style={styles.label}>Value</Text>
+      <TextInput style={styles.input} value={value} onChangeText={setValue} />
+
+      <Button title="setItem" onPress={() => HelloStorage.setItem(key, value)} />
+      <View style={{ height: 8 }} />
+      <Button
+        title="getItem"
+        onPress={async () => setStored(await HelloStorage.getItem(key))}
+      />
+
+      <Text style={styles.result}>Stored: {stored ?? '(null)'}</Text>
+      <StatusBar style="auto" />
     </View>
   );
 }
 
-const styles = {
-  header: {
-    fontSize: 30,
-    margin: 20,
+const styles = StyleSheet.create({
+  container: { 
+    flex: 1, 
+    padding: 24, 
+    justifyContent: 'center', 
+    backgroundColor: '#fff' 
   },
-  groupHeader: {
-    fontSize: 20,
-    marginBottom: 20,
+  label: { 
+    marginTop: 12, 
+    fontWeight: '600' 
   },
-  group: {
-    margin: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
+  input: { 
+    borderWidth: 1, 
+    borderColor: '#ccc', 
+    padding: 8, 
+    borderRadius: 6, 
+    marginTop: 4 
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#eee',
+  result: { 
+    marginTop: 24, 
+    fontSize: 16 
   },
-  view: {
-    flex: 1,
-    height: 200,
-  },
-};
+});
