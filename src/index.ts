@@ -1,5 +1,9 @@
-// Reexport the native module. On web, it will be resolved to HelloStorageModule.web.ts
-// and on native platforms to HelloStorageModule.ts
-export { default } from './HelloStorageModule';
-export { default as HelloStorageView } from './HelloStorageView';
-export * from  './HelloStorage.types';
+import HelloStorageModule from './HelloStorageModule';
+
+export async function setItem(key: string, value: string): Promise<void> {
+  return await HelloStorageModule.setItem(key, value);
+}
+
+export async function getItem(key: string): Promise<string | null> {
+  return await HelloStorageModule.getItem(key);
+}
