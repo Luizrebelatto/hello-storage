@@ -12,7 +12,7 @@ class HelloStorageModule : Module() {
   private val sharedPreferences: SharedPreferences
     get() = context.getSharedPreferences("HelloStoragePrefs", Context.MODE_PRIVATE)
 
-  override func definition() = ModuleDefinition {
+  override fun definition() = ModuleDefinition {
     Name("HelloStorage")
 
     AsyncFunction("setItem") { key: String, value: String ->
