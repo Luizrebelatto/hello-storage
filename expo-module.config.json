@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["HelloStorageModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.hellostorage.HelloStorageModule"]
+  }
+}
