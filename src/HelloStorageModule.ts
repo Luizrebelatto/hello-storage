@@ -7,5 +7,4 @@ declare class HelloStorageModule extends NativeModule<HelloStorageModuleEvents> 
   getItem(key: string): Promise<string | null>;
 }
 
-// This call loads the native module object from the JSI.
 export default requireNativeModule<HelloStorageModule>('HelloStorage');

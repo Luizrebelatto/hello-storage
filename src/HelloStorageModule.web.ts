@@ -1,14 +1,11 @@
 import { registerWebModule, NativeModule } from 'expo';
 
-import { HelloStorageModuleEvents } from './HelloStorage.types';
-
-class HelloStorageModule extends NativeModule<HelloStorageModuleEvents> {
-  PI = Math.PI;
-  async setValueAsync(value: string): Promise<void> {
-    this.emit('onChange', { value });
+class HelloStorageModule extends NativeModule {
+  async setItem(key: string, value: string): Promise<void> {
+    localStorage.setItem(key, value);
   }
-  hello() {
-    return 'Hello world! 👋';
+  async getItem(key: string): Promise<string | null> {
+    return localStorage.getItem(key);
   }
 }
 
